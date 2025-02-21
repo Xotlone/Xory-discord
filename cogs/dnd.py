@@ -7,7 +7,7 @@ class Dnd(dis_commands.Cog):
 
     @dis_commands.slash_command(name='hello_world')
     async def hello_world(self, inter: disnake.CommandInteraction):
-        await inter.send(content="Hello world!", ephemeral=True)
+        await inter.send(content="Hello world!", ephemeral=True, tts = True)
 
 def setup(bot: dis_commands.Bot):
     bot.add_cog(Dnd(bot))
