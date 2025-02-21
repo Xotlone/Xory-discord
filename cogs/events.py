@@ -9,5 +9,9 @@ class Events(dis_commands.Cog):
     async def on_connect(self):
         print('Successful connection')
 
+    @dis_commands.Cog.listener()
+    async def on_ready(self):
+        print('Client already')
+
 def setup(bot: dis_commands.Bot):
     bot.add_cog(Events(bot))
