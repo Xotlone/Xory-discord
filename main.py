@@ -13,7 +13,7 @@ command_sync_flags = commands.CommandSyncFlags.default()
 command_sync_flags.sync_commands = True
 intents = disnake.Intents.all()
 localization_provider = disnake.LocalizationStore(strict=True)
-localization_provider.load('localization')
+localization_provider.load('locale')
 bot = commands.Bot(
     command_prefix='/',
     help_command=None,
