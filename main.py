@@ -4,11 +4,18 @@ import disnake
 from disnake.ext import commands
 from dotenv import load_dotenv
 
+from utils import constants
+
+
 load_dotenv('.env')
 
 intents = disnake.Intents.all()
-bot = commands.Bot(command_prefix='/', intents=intents)
-bot.remove_command('help')
+bot = commands.Bot(
+    command_prefix='/',
+    help_command=None,
+    owner_ids=constants.OWNER_IDS,
+    intents=intents,
+)
 
 for cog_name in os.listdir('./cogs'):
     if cog_name.endswith('.py'):
