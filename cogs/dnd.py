@@ -1,7 +1,7 @@
 from random import randint
 
 import disnake
-from disnake import Option, OptionType
+from disnake import Option, OptionType, OptionChoice
 from disnake.i18n import Localized
 from disnake.ext import commands as dis_commands
 
@@ -22,12 +22,15 @@ class Dnd(dis_commands.Cog):
             Option(
                 name='hidden',
                 description=Localized(key='dice.option2.desc'),
-                type=OptionType.boolean
+                choices=[
+                    OptionChoice(Localized('yes', key='yes'), '1'),
+                    OptionChoice(Localized('no', key='no'), '0')
+                ]
             )
         ]
     )
     async def dice(self, inter: disnake.CommandInteraction, sides: int = 20,
-                   hidden: bool = False):
+                   hidden: str = False):
         value = randint(1, sides)
 
         color = disnake.Color.dark_embed()
@@ -42,7 +45,7 @@ class Dnd(dis_commands.Cog):
         )
         embed.set_author(name=inter.author.display_name,
                          icon_url=inter.author.display_avatar.url)
-        await inter.send(embed=embed, ephemeral=hidden)
+        await inter.send(embed=embed, ephemeral=bool(int(hidden)))
 
 
 def setup(bot: dis_commands.Bot):
