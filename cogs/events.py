@@ -1,4 +1,3 @@
-import disnake
 from disnake.ext import commands as dis_commands
 
 import database
