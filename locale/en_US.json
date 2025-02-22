@@ -1,0 +1,7 @@
+{
+  "dice.desc": "Throw of the dice",
+  "dice.option1.desc": "Number of faces. Default is 20",
+  "dice.option2.desc": "Hidden Throw",
+  "yes": "yes",
+  "no": "no"
+}
