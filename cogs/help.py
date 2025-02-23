@@ -1,12 +1,15 @@
 """"
 На будущее: Нужно будет разделить команды, на разные группы или добавить кнопку переноса
 """
+from idlelib.undo import Command
+from importlib.metadata import requires
+from random import choices
 
 import disnake
 
 from disnake.ext import commands
 from disnake.embeds import Embed
-from disnake.ui import WrappedComponent
+from disnake.app_commands import Option, OptionChoice
 
 class Help(commands.Cog):
     DECORATION = '```'
@@ -19,18 +22,37 @@ class Help(commands.Cog):
         except KeyError:
             return self.bot.i18n.get(name_key)['en-US']
 
-    @commands.slash_command(name='help', description='Command sends list with all command')
-    async def help(self, inter: disnake.CommandInteraction):
-        embed_help = Embed(
+    @commands.slash_command(
+        name='help',
+        description='Command sends list with all command',
+        options=[
+            Option(name='lists',
+                   description='Choose the list of command',
+                   choices=[
+                       OptionChoice('slash commands', value='0'),
+                       OptionChoice('simple commands', value='1')
+                   ],
+                   required=True
+                   ),
+        ])
+    async def help(self, inter: disnake.CommandInteraction, lists):
+        embed = Embed(
             title=self.get_locale('help.title', inter),
         )
 
-        embed_help.description = ''
+        embed.description = ''
 
-        for help_c in self.bot.slash_commands:
-            embed_help.description += f'```{help_c.name}: {help_c.description}```'
+        if lists == '0':
+            for com in self.bot.slash_commands:
+                embed.description += f'```{com.name}: {com.description}```'
+        else:
+            if self.bot.commands == set():
+                embed.description += f'```Simple commands not exists```'
+            else:
+                for com in self.bot.commands:
+                    embed.description += f'```{com.name}: {com.description}```'
 
-        await inter.send(embed=embed_help,
+        await inter.send(embed=embed,
                          ephemeral=True
                          )
 
