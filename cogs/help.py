@@ -1,10 +1,6 @@
 """"
 На будущее: Нужно будет разделить команды, на разные группы или добавить кнопку переноса
 """
-from idlelib.undo import Command
-from importlib.metadata import requires
-from random import choices
-
 import disnake
 
 from disnake.ext import commands
