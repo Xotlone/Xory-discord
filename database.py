@@ -1,8 +1,6 @@
 import sqlite3
 
-db = sqlite3.connect('database.db')
-cursor = db.cursor()
+connect = sqlite3.connect('database.db')
+cursor = connect.cursor()
 
 Member = cursor.execute('CREATE TABLE IF NOT EXISTS "Member"(ID, Score)')
-
-db.close()
