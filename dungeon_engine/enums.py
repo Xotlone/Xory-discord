@@ -44,3 +44,14 @@ class Proficiency(Enum):
     LACK_OF_KNOWLEDGE = 0
     PROFICIENCY = 1
     COMPETENCE = 2
+
+class ArmorTypes(Enum):
+    LIGHT = auto()
+    MEDIUM = auto()
+    HEAVY = auto()
+
+class WeaponTypes(Enum):
+    SIMPLE = auto()
+    SIMPLE_RANGED = auto()
+    MARTIAL = auto()
+    MARTIAL_RANGED = auto()
