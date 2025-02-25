@@ -272,8 +272,7 @@ class Character:
         self._armor_class = result
 
     @property
-    def initiative(self) -> int:
-        return self._initiative
+    def initiative(self) -> int: return self._initiative
 
     @initiative.setter
     def initiative(self, value: int):
@@ -281,27 +280,24 @@ class Character:
                                self.parameters[Parameters.DEXTERITY] + value)
 
     @property
-    def speed(self) -> int:
-        result = self._speed
-        if self._speed is None:
+    def speed(self) -> int: return self._speed
+
+    @speed.setter
+    def speed(self, new_speed: int):
+        result = 30
+        if new_speed is None:
             for feature in self.race.features:
                 influence = feature.influence
-                if influence.parameter == 'speed':
+                if (isinstance(influence, Influence) and
+                        influence.parameter == 'speed'):
                     result = influence.value
 
         if result < 0:
             raise ValueError('Speed cannot be lower than 0')
-        return result
-
-    @speed.setter
-    def speed(self, new_speed: int):
-        if new_speed is not None and new_speed < 0:
-            raise ValueError('Speed cannot be lower than 0')
-        self._speed = new_speed
+        self._speed = result
 
     @property
-    def skills(self) -> list[Skill]:
-        return self._skills
+    def skills(self) -> list[Skill]: return self._skills
 
     @skills.setter
     def skills(self, new_skills: list[Skill]):
