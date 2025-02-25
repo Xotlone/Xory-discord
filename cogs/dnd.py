@@ -11,20 +11,22 @@ class Dnd(dis_commands.Cog):
 
     @dis_commands.slash_command(
         name='dice',
-        description=Localized(key='dice.desc'),
+        description=Localized('Бросок игральной кости', key='dice.desc'),
         options=[
             Option(
                 name='sides',
-                description=Localized(key='dice.option1.desc'),
+                description=Localized('Количество граней. По умолчанию 20',
+                                      key='dice.option1.desc'),
                 type=OptionType.integer,
                 min_value=2
             ),
             Option(
                 name='hidden',
-                description=Localized(key='dice.option2.desc'),
+                description=Localized('Скрытый бросок',
+                                      key='dice.option2.desc'),
                 choices=[
-                    OptionChoice(Localized('yes', key='yes'), '1'),
-                    OptionChoice(Localized('no', key='no'), '0')
+                    OptionChoice(Localized('да', key='yes'), '1'),
+                    OptionChoice(Localized('нет', key='no'), '0')
                 ]
             )
         ]
