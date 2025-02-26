@@ -1,5 +1,7 @@
 from typing import Union, Self
 
+from dungeon_enum import DamageType, CharacterSlot
+
 __all__ = (
     'Item',
 )
@@ -116,6 +118,7 @@ class Item:
         self.price = Price() if price is None else price
         self.weight = 0 if weight is None else weight
         self.is_use = False
+        self.on_slot = CharacterSlot.back
 
     @property
     def weight(self): return self._weight
@@ -242,10 +245,39 @@ class Armor(Item):
             raise TypeError('Armor class cannot be compared with'
                             f' {type(other)}')
 
-# TODO: Weapon types class
 
-# TODO: Weapon class (with ranged)
+class Property:
+    def __init__(self, name: str, description: str, **kwargs):
+        self.name = name
+        self.description = description
+        self.values = kwargs
 
-# TODO: Tools class (but that's not certain!)
 
-# TODO: Magic items (very flexible)
+class Damage:
+    def __init__(self, type_: Union[DamageType, int, str],
+                 value: tuple[int, int] = (0, 0)):
+        self.type_ = type_
+        self.value = value
+
+    @property
+    def type_(self): return self._type_
+
+    @type_.setter
+    def type_(self, val: Union[DamageType, int, str]):
+        if isinstance(val, int) and not len(DamageType.names()) > val >= 0:
+            raise ValueError(f'Incorrect damage type with index {val}')
+        elif isinstance(val, str) and val.lower() not in DamageType.names():
+            raise ValueError(f'Incorrect damage type with name "{val}"')
+        self._type_ = val
+
+
+class Weapon(Item):
+    def __init__(self, name: str, description: str, price: Price = None,
+                 weight: int = None, damage: Damage = None,
+                 properties: list[Property] = None,
+                 is_improvised: bool = False, is_silvered: bool = False):
+        super().__init__(name, description, price, weight)
+        self.damage = Damage(DamageType.bludgeoning) if None else damage
+        self.properties = properties
+        self.is_improvised = is_improvised
+        self.is_silvered = is_silvered
