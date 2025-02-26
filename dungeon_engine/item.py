@@ -107,6 +107,8 @@ class Price:
 
 
 class Item:
+    """Main parental class"""
+
     def __init__(self, name: str, description: str, price: Price = None,
                  weight: int = None):
         self.name = name
@@ -128,7 +130,10 @@ class Item:
 
     def __eq__(self, other: Self): return hash(self) == hash(other)
 
+
 class ArmorType:
+    """D&D armor type class"""
+
     def __init__(self, name: str, taking_off_time: int, putting_on_time: int):
         self.name = name
         self.taking_off_time = taking_off_time # In seconds
@@ -176,6 +181,8 @@ class ArmorType:
 
 
 class Armor(Item):
+    """D&D armor class"""
+
     def __init__(self, name: str, description: str, price: Price = None,
                  weight: int = None, armor_type: ArmorType = None,
                  armor_class: int = 10, required_strength: int = 0,
@@ -234,3 +241,11 @@ class Armor(Item):
         else:
             raise TypeError('Armor class cannot be compared with'
                             f' {type(other)}')
+
+# TODO: Weapon types class
+
+# TODO: Weapon class (with ranged)
+
+# TODO: Tools class (but that's not certain!)
+
+# TODO: Magic items (very flexible)
