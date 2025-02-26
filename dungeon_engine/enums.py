@@ -1,57 +1,25 @@
 from enum import Enum, auto
 
 
-class Parameters(Enum):
-    STRENGTH = auto()
-    DEXTERITY = auto()
-    CONSTITUTION = auto()
-    INTELLIGENCE = auto()
-    WISDOM = auto()
-    CHARISMA = auto()
-
-class Skills(Enum):
-    ACROBATICS = auto()
-    ANIMAL_HANDLING = auto()
-    ARCANA = auto()
-    ATHLETICS = auto()
-    DECEPTION = auto()
-    HISTORY = auto()
-    INSIGHT = auto()
-    INTIMIDATION = auto()
-    INVESTIGATION = auto()
-    MEDICINE = auto()
-    NATURE = auto()
-    PERCEPTION = auto()
-    PEFORMANCE = auto()
-    PERSUASION = auto()
-    RELIGION = auto()
-    SLEIGHT_OF_HAND = auto()
-    STEALTH = auto()
-    SURVIVAL = auto()
-
 class Alignment(Enum):
-    LAWFUL_GOOD = [0, 0]
-    LAWFUL_NEUTRAL = [1, 0]
-    LAWFUL_EVIL = [2, 0]
-    NEUTRAL_GOOD = [1, 0]
-    TRUE_NEUTRAL = [1, 1]
-    NEUTRAL_EVIL = [1, 2]
-    CHAOTIC_GOOD = [2, 0]
-    CHAOTIC_NEUTRAL = [2, 1]
-    CHAOTIC_EVIL = [2, 2]
-
-class Proficiency(Enum):
-    LACK_OF_KNOWLEDGE = 0
-    PROFICIENCY = 1
-    COMPETENCE = 2
+    lawful_good = [0, 0]
+    lawful_neutral = [1, 0]
+    lawful_evil = [2, 0]
+    neutral_good = [1, 0]
+    true_neutral = [1, 1]
+    neutral_evil = [1, 2]
+    chaotic_good = [2, 0]
+    chaotic_neutral = [2, 1]
+    chaotic_evil = [2, 2]
+    def __str__(self): return self.name
 
 class ArmorTypes(Enum):
-    LIGHT = auto()
-    MEDIUM = auto()
-    HEAVY = auto()
+    light = auto()
+    medium = auto()
+    heavy = auto()
 
 class WeaponTypes(Enum):
-    SIMPLE = auto()
-    SIMPLE_RANGED = auto()
-    MARTIAL = auto()
-    MARTIAL_RANGED = auto()
+    simple = auto()
+    simple_ranged = auto()
+    martial = auto()
+    martial_ranged = auto()

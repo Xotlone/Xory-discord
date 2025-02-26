@@ -1,8 +1,6 @@
 from typing import *
 import math
 
-from enums import *
-
 
 def get_level(experience_point: int) -> int:
     """Calculates the level depending on experience"""
@@ -12,32 +10,6 @@ def get_level(experience_point: int) -> int:
 def get_profficiency_bonus(experience_point: int) -> int:
     """Calculates the profficiency bonus depending on experience"""
     return max(2, int((experience_point / 100) ** (1 / 3)))
-
-
-class Skill:
-    def __init__(self, name: Skills,
-                 proficiency: Proficiency = Proficiency.LACK_OF_KNOWLEDGE):
-        self.name = name
-        self.proficiency = proficiency
-
-    def __eq__(self, other): return hash(self) == hash(other)
-
-    def __hash__(self): return hash(self.name) + hash(self.proficiency.value)
-
-
-class Price:
-    def __init__(self, copper: int = 0, silver: int = 0, electrum: int = 0,
-                 golden: int = 0, platinum: int = 0,
-                 raw: list[int, int, int, int, int] = None):
-        self.copper = copper
-        self.silver = silver
-        self.electrum = electrum
-        self.golden = golden
-        self.platinum = platinum
-        if raw is None:
-            self.raw = [copper, silver, electrum, golden, platinum]
-        else:
-            self.raw = raw
 
 
 class Item:
