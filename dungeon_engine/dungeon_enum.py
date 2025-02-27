@@ -30,20 +30,20 @@ class DamageType(Enum):
 
 
 class CharacterSlot(Enum):
-    r_feet = auto()
-    l_feet = auto()
-    r_leg = auto()
-    l_leg = auto()
-    belt = auto()
-    torso = auto()
     back = auto()
-    r_arm = auto()
+    belt = auto()
+    glasses = auto()
+    head = auto()
     l_arm = auto()
-    r_wrist = auto()
+    l_feet = auto()
+    l_leg = auto()
     l_wrist = auto()
     neck = auto()
-    head = auto()
-    glasses = auto()
+    r_arm = auto()
+    r_feet = auto()
+    r_leg = auto()
+    r_wrist = auto()
+    torso = auto()
 
     def __str__(self): return self.name
 
@@ -60,8 +60,27 @@ class Alignment(Enum):
     chaotic_evil = [2, 2]
     def __str__(self): return self.name
 
-class WeaponTypes(Enum):
+
+class WeaponType(Enum):
     simple = auto()
     simple_ranged = auto()
     martial = auto()
     martial_ranged = auto()
+
+
+class ActionType(Enum):
+    move = auto()
+    interact = auto()
+    communicate = auto()
+    action = auto()
+    bonus_action = auto()
+    reaction = auto()
+    attack = auto()
+    cast = auto()
+    dash = auto()
+    disengage = auto()
+    dodge = auto()
+    help_ = auto()
+    hide = auto()
+    hold_action = auto()
+    seatch = auto()
