@@ -98,10 +98,7 @@ class Price:
         else: raise TypeError(f'Price cannot be compared with {type(other)}')
 
     def __gt__(self, other: Union[Self, int, list]):
-        if isinstance(other, Price): return self._raw > other._raw
-        elif isinstance(other, int): return self._raw > other
-        elif isinstance(other, list): return self._raw > Price(other)._raw
-        else: raise TypeError(f'Price cannot be compared with {type(other)}')
+        return not self.__lt__(other)
 
     def __le__(self, other: Union[Self, int, list]):
         if isinstance(other, Price): return self._raw <= other._raw
@@ -110,10 +107,7 @@ class Price:
         else: raise TypeError(f'Price cannot be compared with {type(other)}')
 
     def __ge__(self, other: Union[Self, int, list]):
-        if isinstance(other, Price): return self._raw >= other._raw
-        elif isinstance(other, int): return self._raw >= other
-        elif isinstance(other, list): return self._raw >= Price(other)._raw
-        else: raise TypeError(f'Price cannot be compared with {type(other)}')
+        return not self.__le__(other)
 
 
 class Item:
@@ -226,14 +220,7 @@ class Armor(Item):
             raise TypeError('Armor class cannot be compared with'
                               f' {type(other)}')
 
-    def __gt__(self, other: Union[Self, int]):
-        if isinstance(other, Armor):
-            return self.armor_class > other.armor_class
-        elif isinstance(other, int):
-            return self.armor_class > other
-        else:
-            raise TypeError('Armor class cannot be compared with'
-                            f' {type(other)}')
+    def __gt__(self, other: Union[Self, int]): return not self.__lt__(other)
 
     def __le__(self, other: Union[Self, int]):
         if isinstance(other, Armor):
@@ -244,14 +231,7 @@ class Armor(Item):
             raise TypeError('Armor class cannot be compared with'
                             f' {type(other)}')
 
-    def __ge__(self, other: Union[Self, int]):
-        if isinstance(other, Armor):
-            return self.armor_class >= other.armor_class
-        elif isinstance(other, int):
-            return self.armor_class >= other
-        else:
-            raise TypeError('Armor class cannot be compared with'
-                            f' {type(other)}')
+    def __ge__(self, other: Union[Self, int]): return not self.__le__(other)
 
 
 class WeaponProperty:
