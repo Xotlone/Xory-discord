@@ -37,8 +37,9 @@ class Class:
                  class_path: ClassPath = None, *other):
         self.name = name
         self.description = description
-        self.level = Experience.from_level(level)
+        self.level = level
         self.hit_dice = hit_dice
+        self.max_hit = hit_dice[0] * hit_dice[1]
         self.proficiencies = [] if proficiencies is None else proficiencies
         self.saving_throws = [] if saving_throws is None else saving_throws
         self.skills = [] if skills is None else skills
