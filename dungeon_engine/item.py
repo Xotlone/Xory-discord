@@ -1,5 +1,6 @@
-from typing import Union, Self
+from typing import Union, Self, Callable
 
+from ability import Abilities
 from dungeon_enum import *
 from skill import Skill
 
@@ -119,8 +120,8 @@ class Item:
         self.description = description
         self.price = Price() if price is None else price
         self.weight = 0 if weight is None else weight
-        self.is_use = False
-        self.on_slot = CharacterSlot.back
+        self.slots = []
+        self.current_slots = []
 
     @property
     def weight(self): return self._weight
@@ -129,6 +130,9 @@ class Item:
     def weight(self, val: int):
         if val < 0: raise ValueError('Weight cannot have a negative value.')
         self._weight = val
+
+    @property
+    def is_use(self): return self.slots == self.current_slots
 
     def __hash__(self):
         return hash((self.name, self.description, self.price, self.weight))
@@ -139,8 +143,10 @@ class Item:
 class ArmorType:
     """D&D armor type class"""
 
-    def __init__(self, name: str, taking_off_time: int, putting_on_time: int):
+    def __init__(self, name: str, formula: Callable, taking_off_time: int,
+                 putting_on_time: int):
         self.name = name
+        self.formula = formula
         self.taking_off_time = taking_off_time # In seconds
         self.putting_on_time = putting_on_time # In seconds
 
@@ -163,6 +169,10 @@ class ArmorType:
                                      'seconds.')
         self._putting_on_time = val
 
+    def __eq__(self, other: Union[Self, str]):
+        if isinstance(other, ArmorType): return self.name == other.name
+        elif isinstance(other, str): return self.name.lower() == other.lower()
+
     @staticmethod
     def types() -> tuple[str, ...]:
         """Returns list of armor types"""
@@ -170,19 +180,27 @@ class ArmorType:
 
     @classmethod
     def light_armor(cls):
-        return cls('Light armor', 60, 60)
+        def formula(*args):
+            return args[0] + args[1].dexterity
+        return cls('Light armor', formula, 60, 60)
 
     @classmethod
     def medium_armor(cls):
-        return cls('Medium armor', 60, 300)
+        def formula(*args):
+            return max(2, args[0] + args[1].dexterity)
+        return cls('Medium armor', formula, 60, 300)
 
     @classmethod
     def heavy_armor(cls):
-        return cls('Heavy armor', 300, 600)
+        def formula(*args):
+            return args[0]
+        return cls('Heavy armor', formula, 300, 600)
 
     @classmethod
     def shield(cls):
-        return cls('Shield', 6, 6)
+        def formula(*args):
+            return args[0]
+        return cls('Shield', formula, 6, 6)
 
 
 class Armor(Item):
@@ -199,7 +217,9 @@ class Armor(Item):
         self.stealth_penalty = stealth_penalty
 
     @property
-    def armor_class(self): return self._armor_class
+    def armor_class(self, abilities: Abilities = None):
+        if abilities is None: return self._armor_class
+        return self.type_.formula(self._armor_class, abilities)
 
     @armor_class.setter
     def armor_class(self, val: int):

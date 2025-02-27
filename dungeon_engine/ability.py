@@ -23,11 +23,14 @@ class Ability:
 
     def __hash__(self): return hash(self.name)
 
+    def __int__(self): return self.value
+
     def __str__(self): return self.name
 
     @staticmethod
     def names() -> tuple[str, ...]:
         """Returns list of ability names"""
+
         return tuple(filter(lambda x: '__' not in x, Ability.__dict__))[2:]
 
     @classmethod
@@ -53,3 +56,17 @@ class Ability:
     @classmethod
     def charisma(cls, value: int = 10):
         return cls('charisma', value)
+
+
+class Abilities:
+    """Set of abilities."""
+
+    def __init__(self, strength: int = 10, dexterity: int = 10,
+                 constitution: int = 10, intelligence: int = 10,
+                 wisdom: int = 10, charisma: int = 10):
+        self.strength = Ability.strength(strength)
+        self.dexterity = Ability.dexterity(dexterity)
+        self.constitution = Ability.strength(constitution)
+        self.intelligence = Ability.intelligence(intelligence)
+        self.wisdom = Ability.wisdom(wisdom)
+        self.charisma = Ability.charisma(charisma)
