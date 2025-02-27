@@ -1,11 +1,14 @@
 from math import floor
 
 __all__ = (
-    'Ability'
+    'Ability',
+    'Abilities',
 )
 
 
 class Ability:
+    """Ability for characters and checks"""
+
     def __init__(self, name: str, value: int = 0):
         self.name = name
         self.modifier: int = 0

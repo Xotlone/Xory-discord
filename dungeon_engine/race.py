@@ -25,6 +25,8 @@ class Race(Subrace):
         self.subraces = subraces
 
     def effect(self, param: str):
+        """Returns an effect "param" of traits"""
+
         result = lambda *x: False
         for trait in self.traits:
             if param in trait.effects.keys():
