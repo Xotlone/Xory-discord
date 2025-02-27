@@ -1,9 +1,17 @@
 from typing import Union, Self
 
-from dungeon_enum import DamageType, CharacterSlot
+from dungeon_enum import *
+from skill import Skill
 
 __all__ = (
+    'Price',
     'Item',
+    'ArmorType',
+    'Armor',
+    'WeaponProperty',
+    'Damage',
+    'Weapon',
+    'Tool',
 )
 
 
@@ -187,11 +195,11 @@ class Armor(Item):
     """D&D armor class"""
 
     def __init__(self, name: str, description: str, price: Price = None,
-                 weight: int = None, armor_type: ArmorType = None,
+                 weight: int = None, type_: ArmorType = None,
                  armor_class: int = 10, required_strength: int = 0,
                  stealth_penalty: bool = False):
         super().__init__(name, description, price, weight)
-        self.armor_type = armor_type
+        self.type_ = type_
         self.armor_class = armor_class
         self.required_strength = required_strength
         self.stealth_penalty = stealth_penalty
@@ -246,7 +254,9 @@ class Armor(Item):
                             f' {type(other)}')
 
 
-class Property:
+class WeaponProperty:
+    """A class for storing weapon property"""
+
     def __init__(self, name: str, description: str, **kwargs):
         self.name = name
         self.description = description
@@ -254,10 +264,12 @@ class Property:
 
 
 class Damage:
+    """A class for storing damage type and damage hit dice"""
+
     def __init__(self, type_: Union[DamageType, int, str],
-                 value: tuple[int, int] = (0, 0)):
+                 dice: tuple[int, int] = (0, 0)):
         self.type_ = type_
-        self.value = value
+        self.dice = dice
 
     @property
     def type_(self): return self._type_
@@ -272,12 +284,25 @@ class Damage:
 
 
 class Weapon(Item):
+    """D&D weapon class"""
+
     def __init__(self, name: str, description: str, price: Price = None,
-                 weight: int = None, damage: Damage = None,
-                 properties: list[Property] = None,
+                 weight: int = None, type_: WeaponType = None,
+                 damage: Damage = None,
+                 properties: list[WeaponProperty] = None,
                  is_improvised: bool = False, is_silvered: bool = False):
         super().__init__(name, description, price, weight)
+        self.type_ = name if type_ is None else type_
         self.damage = Damage(DamageType.bludgeoning) if None else damage
-        self.properties = properties
+        self.properties = [] if properties is None else properties
         self.is_improvised = is_improvised
         self.is_silvered = is_silvered
+
+
+class Tool(Item):
+    """A class storing tool features"""
+
+    def __init__(self, name: str, description: str, price: Price = None,
+                 weight: int = None, feature: dict[Skill, str] = None):
+        super().__init__(name, description, price, weight)
+        self.feature = {} if feature is None else feature
