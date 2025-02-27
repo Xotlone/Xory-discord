@@ -1,5 +1,7 @@
 from math import floor
 
+from typing import Union
+
 __all__ = (
     'Ability',
     'Abilities',
@@ -73,3 +75,11 @@ class Abilities:
         self.intelligence = Ability.intelligence(intelligence)
         self.wisdom = Ability.wisdom(wisdom)
         self.charisma = Ability.charisma(charisma)
+
+    def __call__(self, item: Union[str, Ability]):
+        if isinstance(item, Ability): item = item.name
+
+        abilities = tuple(filter(lambda x: '__' not in x, self.__dict__))[:6]
+        if item.lower() not in abilities:
+            raise ValueError(f'"{item}" not in abilities')
+        return eval(f'self.{item.lower()}')

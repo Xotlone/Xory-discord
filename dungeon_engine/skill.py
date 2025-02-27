@@ -1,5 +1,7 @@
 from typing import Union, Self
 
+from ability import Ability, Abilities
+
 __all__ = (
     'Profficiency',
     'Skill',
@@ -76,9 +78,13 @@ class Profficiency:
 
 
 class Skill:
-    def __init__(self, name: str, level: Union[Profficiency, int]):
+    """Skill related to ability"""
+
+    def __init__(self, name: str, level: Union[Profficiency, int],
+                 related: Ability):
         self.name = name
         self.level = level
+        self.related = related
 
     @property
     def name(self):
@@ -112,72 +118,107 @@ class Skill:
 
     @classmethod
     def acrobatics(cls, level: Union[Profficiency, int] = 0):
-        return cls('acrobatics', level)
+        return cls('acrobatics', level, Ability.dexterity())
 
     @classmethod
     def animal_handling(cls, level: Union[Profficiency, int] = 0):
-        return cls('animal_handling', level)
+        return cls('animal_handling', level, Ability.wisdom())
 
     @classmethod
     def arcana(cls, level: Union[Profficiency, int] = 0):
-        return cls('arcana', level)
+        return cls('arcana', level, Ability.intelligence())
 
     @classmethod
     def athletics(cls, level: Union[Profficiency, int] = 0):
-        return cls('athletics', level)
+        return cls('athletics', level, Ability.strength())
 
     @classmethod
     def deception(cls, level: Union[Profficiency, int] = 0):
-        return cls('deception', level)
+        return cls('deception', level, Ability.charisma())
 
     @classmethod
     def history(cls, level: Union[Profficiency, int] = 0):
-        return cls('history', level)
+        return cls('history', level, Ability.intelligence())
 
     @classmethod
     def insight(cls, level: Union[Profficiency, int] = 0):
-        return cls('insight', level)
+        return cls('insight', level, Ability.wisdom())
 
     @classmethod
     def intimidation(cls, level: Union[Profficiency, int] = 0):
-        return cls('intimidation', level)
+        return cls('intimidation', level, Ability.charisma())
 
     @classmethod
     def investigation(cls, level: Union[Profficiency, int] = 0):
-        return cls('investigation', level)
+        return cls('investigation', level, Ability.intelligence())
 
     @classmethod
     def medicine(cls, level: Union[Profficiency, int] = 0):
-        return cls('medicine', level)
+        return cls('medicine', level, Ability.wisdom())
 
     @classmethod
     def nature(cls, level: Union[Profficiency, int] = 0):
-        return cls('nature', level)
+        return cls('nature', level, Ability.intelligence())
 
     @classmethod
     def perception(cls, level: Union[Profficiency, int] = 0):
-        return cls('perception', level)
+        return cls('perception', level, Ability.wisdom())
 
     @classmethod
-    def peformance(cls, level: Union[Profficiency, int] = 0):
-        return cls('peformance', level)
+    def performance(cls, level: Union[Profficiency, int] = 0):
+        return cls('performance', level, Ability.charisma())
 
     @classmethod
     def persuasion(cls, level: Union[Profficiency, int] = 0):
-        return cls('persuasion', level)
+        return cls('persuasion', level, Ability.charisma())
 
     @classmethod
     def religion(cls, level: Union[Profficiency, int] = 0):
-        return cls('religion', level)
+        return cls('religion', level, Ability.intelligence())
 
     @classmethod
     def sleight_of_hand(cls, level: Union[Profficiency, int] = 0):
-        return cls('sleight_of_hand', level)
+        return cls('sleight_of_hand', level, Ability.dexterity())
 
     @classmethod
     def stealth(cls, level: Union[Profficiency, int] = 0):
-        return cls('stealth', level)
+        return cls('stealth', level, Ability.dexterity())
 
     @classmethod
     def survival(cls, level: Union[Profficiency, int] = 0):
-        return cls('survival', level)
+        return cls('survival', level, Ability.wisdom())
+
+    def calculate(self, profficiency_bonus: int, abilities: Abilities):
+        return (int(self.level) * profficiency_bonus
+                + abilities(self.related).modifier)
+
+
+class Skills:
+    """Set of skills"""
+
+    def __init__(self, acrobatics: int = 10, animal_handling: int = 10,
+                 arcana: int = 10, athletics: int = 10, deception: int = 10,
+                 history: int = 10, insight: int = 10, intimidation: int = 10,
+                 investigation: int = 10, medicine: int = 10, nature: int = 10,
+                 perception: int = 10, performance: int = 10,
+                 persuasion: int = 10, religion: int = 10,
+                 sleight_of_hand: int = 10, stealth: int = 10,
+                 survival: int = 10):
+        self.acrobatics = Skill.acrobatics(acrobatics)
+        self.animal_handling = Skill.animal_handling(animal_handling)
+        self.arcana = Skill.arcana(arcana)
+        self.athletics = Skill.athletics(athletics)
+        self.deception = Skill.deception(deception)
+        self.history = Skill.history(history)
+        self.insight = Skill.insight(insight)
+        self.intimidation = Skill.intimidation(intimidation)
+        self.investigation = Skill.investigation(investigation)
+        self.medicine = Skill.medicine(medicine)
+        self.nature = Skill.nature(nature)
+        self.perception = Skill.perception(perception)
+        self.performance = Skill.performance(performance)
+        self.persuasion = Skill.persuasion(persuasion)
+        self.religion = Skill.religion(religion)
+        self.sleight_of_hands = Skill.sleight_of_hand(sleight_of_hand)
+        self.stealth = Skill.stealth(stealth)
+        self.survival = Skill.survival(survival)
