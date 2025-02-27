@@ -23,3 +23,10 @@ class Race(Subrace):
                  traits: list[Trait] = None, subraces: list[Subrace] = None):
         super().__init__(name, description, traits)
         self.subraces = subraces
+
+    def effect(self, param: str):
+        result = lambda *x: False
+        for trait in self.traits:
+            if param in trait.effects.keys():
+                result = trait.effects[param]
+        return result
