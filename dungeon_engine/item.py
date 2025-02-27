@@ -16,7 +16,7 @@ __all__ = (
 
 
 class Price:
-    """A class for storing the value of something"""
+    """Class for storing the value of something"""
 
     CURRENCY_DIGIT = (1, 10, 50, 100, 1000)
 
@@ -255,7 +255,7 @@ class Armor(Item):
 
 
 class WeaponProperty:
-    """A class for storing weapon property"""
+    """Class for storing weapon property"""
 
     def __init__(self, name: str, description: str, **kwargs):
         self.name = name
@@ -264,7 +264,7 @@ class WeaponProperty:
 
 
 class Damage:
-    """A class for storing damage type and damage hit dice"""
+    """Class for storing damage type and damage hit dice"""
 
     def __init__(self, type_: Union[DamageType, int, str],
                  dice: tuple[int, int] = (0, 0)):
@@ -300,7 +300,7 @@ class Weapon(Item):
 
 
 class Tool(Item):
-    """A class storing tool features"""
+    """Class for storing tool features"""
 
     def __init__(self, name: str, description: str, price: Price = None,
                  weight: int = None, feature: dict[Skill, str] = None):
