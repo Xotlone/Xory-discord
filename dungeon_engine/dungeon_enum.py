@@ -1,7 +1,11 @@
 from enum import Enum, auto
 
 __all__ = (
-    'DamageType'
+    'DamageType',
+    'CharacterSlot',
+    'Alignment',
+    'WeaponType',
+    'ActionType',
 )
 
 
