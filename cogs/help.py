@@ -7,8 +7,20 @@ from disnake.ext import commands
 from disnake.embeds import Embed
 from disnake.app_commands import Option, OptionChoice
 
+class HelpView(disnake.ui.View):
+    def __init__(self):
+        super().__init__()
+
+    @disnake.ui.button(emoji='⬅', style=disnake.ButtonStyle.grey)
+    async def right(self, button: disnake.ui.Button, inter: disnake.MessageInteraction):
+        pass
+
+    @disnake.ui.button(emoji='➡', style=disnake.ButtonStyle.grey)
+    async def left(self, button: disnake.ui.Button, inter: disnake.MessageInteraction):
+        pass
+
 class Help(commands.Cog):
-    DECORATION = '```'
+    status = 0
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
@@ -23,7 +35,7 @@ class Help(commands.Cog):
         description='Command sends list with all command',
         options=[
             Option(name='lists',
-                   description='Choose the list of command',
+                   description='Select the list of command',
                    choices=[
                        OptionChoice('slash commands', value='0'),
                        OptionChoice('simple commands', value='1')
@@ -33,7 +45,7 @@ class Help(commands.Cog):
         ])
     async def help(self, inter: disnake.CommandInteraction, lists):
         embed = Embed(
-            title=self.get_locale('help.title', inter),
+            title=self.get_locale('help.title', inter)
         )
 
         embed.description = ''
@@ -49,7 +61,8 @@ class Help(commands.Cog):
                     embed.description += f'```{com.name}: {com.description}```'
 
         await inter.send(embed=embed,
-                         ephemeral=True
+                         ephemeral=True,
+                         #view=HelpView()
                          )
 
 def setup(bot: commands.Bot):
