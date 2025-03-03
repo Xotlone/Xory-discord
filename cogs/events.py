@@ -1,3 +1,5 @@
+from types import NoneType
+
 import disnake
 
 from disnake.ext import commands as dis_commands
@@ -37,30 +39,33 @@ class Events(dis_commands.Cog):
 
     @dis_commands.Cog.listener()
     async def on_message(self, message: disnake.Message):
-        channel = utils.get(self.bot.get_all_channels(), name=self.bot.user.locale)
-
         embed = Embed(title='New level!')
 
         out = 0
         buffer = 0
 
-        level = 1000
-
         try:
-            score = database.cursor.execute(f"""SELECT score FROM Member WHERE ID = '{message.author}'""").fetchall()
+            score = database.cursor.execute(f"""SELECT Score FROM Member WHERE ID = '{message.author}'""").fetchone()[0]
 
             content = len(message.content)
 
-            for i in score[0]:
-                buffer = int(i)
-                out = int(i)+content
+            if score is None:
+                buffer = 1
+                out = 1
+            else:
+                buffer = int(score)
+                out = int(score)+content
 
-            last_level = buffer/level
-            current_level = out/level
+            b_current_level = (buffer ** (1 / 2)) // 10
+            b_current_score = (b_current_level * 10) ** 2
+            b_next_score = ((b_current_score + 1) * 10) ** 2
 
-            embed.description = f'User {message.author} have new level: {int(current_level)}'
+            current_level = (out**(1/2))//10
+            current_score = (current_level*10)**2
 
-            if int(last_level) != int(current_level):
+            embed.description = f'User {message.author} has new level: {int(current_level)}'
+
+            if current_score >= b_next_score:
                 await message.channel.send(embed=embed)
 
             database.cursor.execute(f"""UPDATE Member SET score = {out} WHERE ID='{message.author}'""")
@@ -68,6 +73,7 @@ class Events(dis_commands.Cog):
         except IndexError:
             database.cursor.execute(f"""INSERT INTO Member (ID, Score) 
                                 VALUES ('{message.author}', {0})""")
-
+        except TypeError:
+            pass
 def setup(bot: dis_commands.Bot):
     bot.add_cog(Events(bot))
